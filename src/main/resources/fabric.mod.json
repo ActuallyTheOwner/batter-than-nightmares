@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "better-than-nightmares",
+	"version": "${version}",
+	"name": "Better Than Nightmares",
+	"description": "A WIP mod aimed to expand old ideas",
+	"authors": [
+		"ActuallyTheOwner!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "SBELv1.1-A",
+	"icon": "assets/better-than-nightmares/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"ato.nightmare.BetterThanNightmares"
+		],
+		"client": [
+			"ato.nightmare.BetterThanNightmaresClient"
+		],
+		"fabric-datagen": [
+			"ato.nightmare.BetterThanNightmaresDataGenerator"
+		]
+	},
+	"mixins": [
+		"better-than-nightmares.mixins.json",
+		{
+			"config": "better-than-nightmares.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

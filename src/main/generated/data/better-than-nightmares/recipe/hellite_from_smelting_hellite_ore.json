@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "hellite_smelt",
+  "ingredient": "better-than-nightmares:hellite_ore",
+  "result": {
+    "id": "better-than-nightmares:hellite"
+  }
+}

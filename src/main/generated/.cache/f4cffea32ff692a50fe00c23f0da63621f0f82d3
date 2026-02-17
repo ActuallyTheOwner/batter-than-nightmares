@@ -1,0 +1,5 @@
+// 1.21.11	-999999999-01-01T00:00:00	Better Than Nightmares/BTNModRecipeProvider
+8ef2245ce1945e9c66c2e99dff5c897a7f3ff896 data/better-than-nightmares/advancement/recipes/misc/hellite_from_blasting_hellite_ore.json
+a02616cd0d6db0966ca3d0fc73bd1362f49e6b4f data/better-than-nightmares/advancement/recipes/misc/hellite_from_smelting_hellite_ore.json
+028d6754b599ec39c917854ed7f71c5756d278fa data/better-than-nightmares/recipe/hellite_from_blasting_hellite_ore.json
+7f1fbd6402b3a6fee225761a853321278ef7e420 data/better-than-nightmares/recipe/hellite_from_smelting_hellite_ore.json

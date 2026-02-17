@@ -14,5 +14,6 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         dropOther(ModRegister.HELLITE_ORE, ModRegister.HELLITE);
+        dropWhenSilkTouch(ModRegister.HELLITE_ORE);
     }
 }

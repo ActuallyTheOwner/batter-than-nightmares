@@ -1,62 +1,88 @@
 package ato.nightmare.registers;
 
-import net.minecraft.block.*;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.registry.*;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import java.util.function.Function;
 
 import static ato.nightmare.BetterThanNightmares.MOD_ID;
+import static net.minecraft.world.item.CreativeModeTabs.*;
 
 public final class ModRegister {
     // ITEMS
-    public static final Item HELLITE = registerItem("hellite", Item::new, new Item.Settings());
-//    public static final Block HELLITE_ORE = register("hellite_ore",
-//            settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings),
-//            AbstractBlock.Settings.create()
-//                    .mapColor(MapColor.DARK_RED)
-//                    .instrument(NoteBlockInstrument.BASEDRUM)
-//                    .requiresTool()
-//                    .strength(3.0F, 3.0F)
-//                    .sounds(BlockSoundGroup.NETHER_ORE)
-//
-//    );
+    public static final Item HELLITE = registerItem("hellite", Item::new, new Item.Properties());
 
-    public static final Block HELLITE_ORE = register("hellite_ore", Block::new, Block.Settings.create()
-                    .mapColor(MapColor.DARK_RED)
+    public static final Block HELLITE_ORE = register("hellite_ore",
+            settings -> new DropExperienceBlock(UniformInt.of(2, 5), settings),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.NETHER)
                     .instrument(NoteBlockInstrument.BASEDRUM)
-                    .requiresTool()
+                    .requiresCorrectToolForDrops()
                     .strength(3.0F, 3.0F)
-                    .sounds(BlockSoundGroup.NETHER_ORE)
+                    .sound(SoundType.NETHER_ORE)
 
     );
-    
-    private static Block register(String path, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(MOD_ID, path);
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
-        final Block block = Blocks.register(registryKey, factory, settings);
-        Items.register(block);
+    private static Block register(String path, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {
+        final Identifier identifier = Identifier.fromNamespaceAndPath(MOD_ID, path);
+        final ResourceKey<Block> registryKey = ResourceKey.create(Registries.BLOCK, identifier);
+
+        final Block block = Blocks.register(registryKey, factory, properties);
+        Items.registerBlock(block);
         return block;
     }
 
     //WretchWood
     //HopesStone
-    //FUNCTIONS
-    public static Block registerBlock(String name, Function<Block.Settings, Block> factory, Block.Settings settings) {
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, name));
-        return Blocks.register(registryKey, factory, settings);
+
+    public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, Block.Properties properties) {
+        final ResourceKey<Block> registryKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, name));
+        return Blocks.register(registryKey, factory, properties);
     }
 
-    public static Item registerItem(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
-        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
-        return Items.register(registryKey, factory, settings);
+//    public static final ResourceKey<CreativeModeTab> BTN_CUSTOM_CREATIVE_TAB_KEY = ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(MOD_ID, "btn_creative_tab"));
+//
+//    public static final CreativeModeTab BTN_CREATIVE_TAB_ITEMS = FabricItemGroup.builder()
+//            .icon(() -> new ItemStack(HELLITE))
+//            .title(Component.translatable("better-than-nightmares.itemGroup.btn"))
+//            .displayItems((params, output) -> {
+//                output.accept(HELLITE);
+//                output.accept(HELLITE_ORE);
+//            })
+//            .build();
+
+    public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
+        final ResourceKey<Item> registryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, name));
+        return Items.registerItem(registryKey, factory, properties);
     }
     public static void initialize() {
+        // Register the group.
+//        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BTN_CUSTOM_CREATIVE_TAB_KEY, BTN_CREATIVE_TAB_ITEMS);
+
+        ItemGroupEvents.modifyEntriesEvent(INGREDIENTS).register(content -> {
+            content.addAfter(Items.NETHERITE_INGOT, HELLITE);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(NATURAL_BLOCKS).register(content -> {
+            content.addAfter(Items.NETHER_GOLD_ORE, HELLITE_ORE);
+        });
     }
 
 }

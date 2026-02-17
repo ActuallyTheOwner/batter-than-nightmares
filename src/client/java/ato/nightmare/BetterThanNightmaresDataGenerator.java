@@ -1,6 +1,8 @@
 package ato.nightmare;
 
+import ato.nightmare.datagen.ModBlockLootTableProvider;
 import ato.nightmare.datagen.ModBlockTagProvider;
+import ato.nightmare.datagen.ModModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -8,6 +10,8 @@ public class BetterThanNightmaresDataGenerator implements DataGeneratorEntrypoin
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+		pack.addProvider(ModBlockLootTableProvider::new);
 		pack.addProvider(ModBlockTagProvider::new);
+		pack.addProvider(ModModelProvider::new);
 	}
 }
